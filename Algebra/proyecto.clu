@@ -1,188 +1,343 @@
 //#include "Libreria.clu"
 
-DefVarsN3();
-DrawFrame(1,"axes");
-CheckAnimation=CheckBox("Habilitar animación",0);
+/**-------- Initialize the program -----------**/
+DefVarsN3(); // Stablish variables in three dimensions
+DrawFrame(1,"axes"); // Draw the reference arrows. 
+
+
+if(ExecMode & EM_CHANGE){
+	inputs = ReadData("datos.dat");
+}
+
+sizeData = Size(inputs);
+time = (round(Time*100, 0) % (sizeData-1)) + 1;
+
+
+
+/**-------- Initialize the animation -----------**/
+
+// By default, the script becomes animated. 
+// In order to toggle between animated and static, 
+//    we need a checkbox
+
+CheckAnimation = CheckBox("Habilitar animación",0);
+
 if(CheckAnimation){
+	// The animation runs as usual.
+	// It reads the values of the inputs 
+	
 	EnableAnimate(true);
+	Body_Full_Translate_x = inputs(time,1);
+	Body_Full_Translate_y = inputs(time,2);
+	Body_Full_Translate_z = inputs(time,3);
+	
+	Body_Full_x = inputs(time,4);
+	Body_Full_y = inputs(time,5);
+	Body_Full_z = inputs(time,6);
+	 
+	UpperTorso_x = inputs(time,7);
+	UpperTorso_z = inputs(time,8);
+	
+	Clavicle_x = inputs(time,9);
+	Clavicle_z = inputs(time,10);
+	
+	Left_Shoulder_Joint_x = inputs(time,11);
+	Left_Shoulder_Joint_y = inputs(time,12);
+	Left_Shoulder_Joint_z = inputs(time,13);
+	Left_Elbow_Joint_x = inputs(time,14);
+	Left_Hip_Joint_x = inputs(time,19);
+	Left_Hip_Joint_y = inputs(time,20);
+	Left_Hip_Joint_z = inputs(time,21);
+	Left_Knee_Joint_x =  inputs(time,22);
+	Left_Ankle_Joint_x = inputs(time,23);
+	Left_Ankle_Joint_y = inputs(time,24);
+	Left_Ankle_Joint_z = inputs(time,25);
+	
+	Right_Shoulder_Joint_x = inputs(time,15);
+	Right_Shoulder_Joint_y = inputs(time,16);
+	Right_Shoulder_Joint_z = inputs(time,17);
+	Right_Elbow_Joint_x = inputs(time,18);
+	Right_Hip_Joint_x = inputs(time,26);
+	Right_Hip_Joint_y = inputs(time,27);
+	Right_Hip_Joint_z = inputs(time,28);
+	Right_Knee_Joint_x =  inputs(time,29);
+	Right_Ankle_Joint_x = inputs(time,30);
+	Right_Ankle_Joint_y = inputs(time,31);
+	Right_Ankle_Joint_z = inputs(time,32);
+	
 }
 else{
+	// The scene remains static
+	// We use sliders to move the joints
+	// Each slider is related to the original joint
+	
 	EnableAnimate(false);
+	Body_Full_Translate_x = Slider("Body_Full_Translate_x", -Pi/2, Pi/2, 0.05, 0);
+	Body_Full_Translate_y = Slider("Body_Full_Translate_y", -Pi/2, Pi/2, 0.05, 0);
+	Body_Full_Translate_z = Slider("Body_Full_Translate_z", -Pi/2, Pi/2, 0.05, 0);
+	
+	Body_Full_x = Slider("Body_Full_x", -Pi/2, Pi/2, 0.05, 0);
+	Body_Full_y = Slider("Body_Full_y", -Pi/2, Pi/2, 0.05, 0);
+	Body_Full_z = Slider("Body_Full_z", -Pi/2, Pi/2, 0.05, 0);
+	
+	UpperTorso_x = Slider("UpperTorso_x", -Pi/2, Pi/2, 0.05, 0);
+	UpperTorso_z = Slider("UpperTorso_z", -Pi/2, Pi/2, 0.05, 0);
+	
+	Clavicle_x = Slider("Clavicle_x", -Pi/4, Pi/4, 0.05, 0);
+	Clavicle_y = Slider("Clavicle_z", -Pi/4, Pi/4, 0.05, 0);
+	
+	Left_Shoulder_Joint_x = Slider("Left_Shoulder_Joint_x", -Pi/2, Pi/2, 0.05, 0);
+	Left_Shoulder_Joint_y = Slider("Left_Shoulder_Joint_y", -Pi/2, Pi/2, 0.05, 0);
+	Left_Shoulder_Joint_z = Slider("Left_Shoulder_Joint_z", -Pi/2, Pi/2, 0.05, 0);
+	Left_Elbow_Joint_x = Slider("Left_Elbow_Joint_x", -Pi, 0, 0.05, 0);
+	Left_Hip_Joint_x = Slider("Left_Hip_Joint_x", -Pi/2, Pi/2, 0.05, 0);
+	Left_Hip_Joint_y = Slider("Left_Hip_Joint_y", -Pi/2, Pi/4, 0.05, 0);
+	Left_Hip_Joint_z = Slider("Left_Hip_Joint_z", -Pi/2, Pi/2, 0.05, 0);
+	Left_Knee_Joint_x = Slider("Left_Knee_Joint_x", -Pi, 0, 0.05, 0);
+	Left_Ankle_Joint_x = Slider("Left_Ankle_Joint_x", -Pi/8, Pi/8, 0.05, 0);
+	Left_Ankle_Joint_y = Slider("Left_Ankle_Joint_y", -Pi/8, Pi/8, 0.05, 0);
+	Left_Ankle_Joint_z = Slider("Left_Ankle_Joint_z", -Pi/8, Pi/8, 0.05, 0);
+	
+	Right_Shoulder_Joint_x = Slider("Right_Shoulder_Joint_x", -Pi/2, Pi/2, 0.05, 0);
+	Right_Shoulder_Joint_y = Slider("Right_Shoulder_Joint_y", -Pi/2, Pi/2, 0.05, 0);
+	Right_Shoulder_Joint_z = Slider("Right_Shoulder_Joint_z", -Pi/2, Pi/2, 0.05, 0);
+	Right_Elbow_Joint_x = Slider("Right_Elbow_Joint_x", -Pi, 0, 0.05, 0);
+	Right_Hip_Joint_x = Slider("Right_Hip_Joint_x", -Pi/2, Pi/2, 0.05, 0);
+	Right_Hip_Joint_y = Slider("Right_Hip_Joint_y", -Pi/2, Pi/4, 0.05, 0);
+	Right_Hip_Joint_z = Slider("Right_Hip_Joint_z", -Pi/2, Pi/2, 0.05, 0);
+	Right_Knee_Joint_x = Slider("Right_Knee_Joint_x", -Pi, 0, 0.05, 0);
+	Right_Ankle_Joint_x = Slider("Right_Ankle_Joint_x", -Pi/8, Pi/8, 0.05, 0);
+	Right_Ankle_Joint_y = Slider("Right_Ankle_Joint_y", -Pi/8, Pi/8, 0.05, 0);
+	Right_Ankle_Joint_z = Slider("Right_Ankle_Joint_z", -Pi/8, Pi/8, 0.05, 0);
 }
-if(ExecMode & EM_CHANGE){
-	inputs=ReadData("datos.dat");
-}
-sizeData=Size(inputs);
-T=(round(Time*100,0)%(sizeData-1))+1;
 
-r=0.15;
-p=e0;
-scale=.0031;
-TBF=TranslatorN3(inputs(T,1),inputs(T,2),inputs(T,3));
-BF_x=RotorN3(1,0,0,inputs(T,4));
-BF_y=RotorN3(0,1,0,inputs(T,5));
-BF_z=RotorN3(0,0,1,inputs(T,6));
-DBF=TBF*BF_x*BF_y*BF_z;
-PBF=DBF*p*(~DBF);
-/**---------------CENTER---------------**/
-/**LLJU**/
-TLLJU=TranslatorN3(0,409.4*scale,0);
-LLJU_x=RotorN3(1,0,0,inputs(T,7));
-LLJU_z=RotorN3(0,0,1,inputs(T,8));
-DLLJU=DBF*LLJU_x*LLJU_z;
-PLLJU=DLLJU*p*(~DLLJU);
-/**LNJ**/
-LNJ_x=RotorN3(1,0,0,inputs(T,9));
-LNJ_y=RotorN3(0,1,0,inputs(T,10));
-DLNJ=DLLJU*TLLJU*LNJ_x*LNJ_y;
-PLNJ=DLNJ*p*(~DLNJ);
 
-/**HeadJ**/
-THeadJ = TranslatorN3(0,100*scale, 0);
-DHeadJ = DLNJ*THeadJ;
-PHeadJ = DHeadJ*p*(~DHeadJ);
+/**-------- General Parameters -----------**/
+// If a variable starts with: 
+// T = Translation
+// D = Direction
+// P = Position
+
+r = 0.15; // Radio
+p = e0; // Reference point
+scale = .0031; // The general scale
+
+// BF = Body Full --> Moves the entire body
+TBF = TranslatorN3(Body_Full_Translate_x, Body_Full_Translate_y, Body_Full_Translate_z);
+BF_x = RotorN3(1,0,0, Body_Full_x);
+BF_y = RotorN3(0,1,0, Body_Full_y);
+BF_z = RotorN3(0,0,1, Body_Full_z);
+DBF = TBF * BF_x * BF_y * BF_z;
+PBF = DBF * p * (~DBF);
+
+
+/**--------------- TORSO ---------------**/
+
+/**LLJU**/  // Upper Torso
+TLLJU = TranslatorN3(0, 409.4*scale, 0);
+LLJU_x = RotorN3(1,0,0, UpperTorso_x);
+LLJU_z = RotorN3(0,0,1, UpperTorso_z);
+DLLJU = DBF * LLJU_x * LLJU_z;
+PLLJU = DLLJU * p * (~DLLJU);
+
+/**LLJL**/  // Lower Torso
+TLLJL = TranslatorN3(0, -119.8*scale, 0);
+DLLJL = DBF * TLLJL;
+PLLJL = DLLJL * p * (~DLLJL);
+
+
+
+/**--------------- HEAD ---------------**/
+/**LNJ**/  // Clavicle
+LNJ_x = RotorN3(1,0,0, Clavicle_x);
+LNJ_y = RotorN3(0,1,0, Clavicle_y);
+DLNJ = DLLJU * TLLJU * LNJ_x * LNJ_y;
+PLNJ = DLNJ * p * (~DLNJ);
+
+/**HeadJ**/  // Neck
+THeadJ = TranslatorN3(0, 100*scale, 0);
+DHeadJ = DLNJ * THeadJ;
+PHeadJ = DHeadJ * p * (~DHeadJ);
+
 /**Head**/
-THead = TranslatorN3(0,110*scale, 0);
-DHead = DHeadJ*THead;
-PHead = DHead*p*(~DHead);
-/**LLJL**/
-TLLJL=TranslatorN3(0,-119.8*scale,0);
-DLLJL=DBF*TLLJL;
-PLLJL=DLLJL*p*(~DLLJL);	
-/**---------------LEFT SIDE---------------**/
-/**SJL**/
-TSJL=TranslatorN3(176.3*scale,-scale,0);
-SJL_x=RotorN3(1,0,0,inputs(T,11));
-SJL_y=RotorN3(0,1,0,inputs(T,12));
-SJL_z=RotorN3(0,0,1,inputs(T,13));
-DSJL=DLNJ*TSJL*SJL_x*SJL_y*SJL_z;
-PSJL=DSJL*p*(~DSJL);
-/**EJL**/
-TEJL=TranslatorN3(70*scale,-239.3*scale,0);
-EJL_x=RotorN3(1,0,0,inputs(T,14));
-DEJL=DSJL*TEJL*EJL_x;
-PEJL=DEJL*p*(~DEJL);
-/**ManoL**/
-TManoL=TranslatorN3(20*scale,-250*scale,0);
-DManoL=DEJL*TManoL;
-PManoL=DManoL*p*(~DManoL);
-/**HJL**/
-THJL=TranslatorN3(93.35*scale,0,0);
-HJL_x=RotorN3(1,0,0,inputs(T,19));
-HJL_y=RotorN3(0,1,0,inputs(T,20));
-HJL_z=RotorN3(0,0,1,inputs(T,21));
-DHJL=DLLJL*THJL*HJL_x*HJL_y*HJL_z;
-PHJL=DHJL*p*(~DHJL);
-/**KJL**/
-TKJL=TranslatorN3(0,-380.6*scale,0);
-KJL_x=RotorN3(1,0,0,inputs(T,22));
-DKJL=DHJL*TKJL*KJL_x;
-PKJL=DKJL*p*(~DKJL);
-/**AJL**/
-TAJL=TranslatorN3(0,-358.6*scale,0);
-AJL_x=RotorN3(1,0,0,inputs(T,23));
-AJL_y=RotorN3(0,1,0,inputs(T,24));
-AJL_z=RotorN3(0,0,1,inputs(T,25));
-DAJL=DKJL*TAJL*AJL_x*AJL_y*AJL_z;
-PAJL=DAJL*p*(~DAJL);
+THead = TranslatorN3(0, 110*scale, 0);
+DHead = DHeadJ * THead;
+PHead = DHead * p * (~DHead);
 
-/**---------------RIGHT SIDE---------------**/
-/**SJR**/
-TSJR=TranslatorN3(-176.3*scale,-scale,0);
-SJR_x=RotorN3(1,0,0,inputs(T,15));
-SJR_y=RotorN3(0,1,0,inputs(T,16));
-SJR_z=RotorN3(0,0,1,inputs(T,17));
-DSJR=DLNJ*TSJR*SJR_x*SJR_y*SJR_z;
-PSJR=DSJR*p*(~DSJR);
-/**EJR**/
-TEJR=TranslatorN3(-70*scale,-239.3*scale,0);
-EJR_x=RotorN3(1,0,0,inputs(T,18));
-DEJR=DSJR*TEJR*EJR_x;
-PEJR=DEJR*p*(~DEJR);
-/**ManoR**/
-TManoR=TranslatorN3(-20*scale,-250*scale,0);
-DManoR=DEJR*TManoR;
-PManoR=DManoR*p*(~DManoR);
-/**HJR**/
-THJR=TranslatorN3(-93.35*scale,0,0);
-HJR_x=RotorN3(1,0,0,inputs(T,26));
-HJR_y=RotorN3(0,1,0,inputs(T,27));
-HJR_z=RotorN3(0,0,1,inputs(T,28));
-DHJR=DLLJL*THJR*HJR_x*HJR_y*HJR_z;
-PHJR=DHJR*p*(~DHJR);
-/**KJR**/
-TKJR=TranslatorN3(0,-380.6*scale,0);
-KJR_x=RotorN3(1,0,0,inputs(T,29));
-DKJR=DHJR*TKJR*KJR_x;
-PKJR=DKJR*p*(~DKJR);
-/**AJR**/
-TAJR=TranslatorN3(0,-358.6*scale,0);
-AJR_x=RotorN3(1,0,0,inputs(T,30));
-AJR_y=RotorN3(0,1,0,inputs(T,31));
-AJR_z=RotorN3(0,0,1,inputs(T,32));
-DAJR=DKJR*TAJR*AJR_x*AJR_y*AJR_z;
-PAJR=DAJR*p*(~DAJR);
+	
 
-/**Visualization**/
-:IPNS;
-::Cilindro(PLNJ,PSJR,r/3);
-::Cilindro(PSJR,PEJR,r/3);
-::Cilindro(PEJR,PManoR,r/3);
-::Cilindro(PLNJ,PSJL,r/3);
-::Cilindro(PSJL,PEJL,r/3);
-::Cilindro(PEJL,PManoL,r/3);
-::Cilindro(PLLJU,PLNJ,r/3);
-::Cilindro(PHJR,PKJR,r/3);
-::Cilindro(PKJR,PAJR,r/3);
-::Cilindro(PHJR,PHJL,r/3);
-::Cilindro(PHJL,PKJL,r/3);
-::Cilindro(PKJL,PAJL,r/3);
-::Cilindro(PLLJU,PLLJL,r/3);
-::Cilindro(PLNJ, PHeadJ, r/3);
-:MMagenta;
-:PHJR-1/2*r^^2*einf;
-:PKJR-1/2*r^^2*einf;
-:PAJR-1/2*r^^2*einf;
-:PHJL-1/2*r^^2*einf;
-:PKJL-1/2*r^^2*einf;
-:PAJL-1/2*r^^2*einf;
-:MRed;
-:PLLJU-1/2*r^^2*einf;
-:PHeadJ-1/2*r^^2*einf;
-:MBlue;
-:PSJR-1/2*r^^2*einf;
-:PEJR-1/2*r^^2*einf;	
-:PManoR-1/2*r^^2*einf;
-:PSJL-1/2*r^^2*einf;
-:PEJL-1/2*r^^2*einf;	
-:PManoL-1/2*r^^2*einf;
-:MYellow;
-:PHead-1/2*r^^2*einf*6;
-/**FEET**/
-Pw=DAJR*VecN3(.3,0,0)*(~DAJR);
-Ph=DAJR*VecN3(0,0.05,0)*(~DAJR);
-Pd=DAJR*VecN3(0,0,0.3)*(~DAJR);
 
-PwL=DAJL*VecN3(.3,0,0)*(~DAJL);
-PhL=DAJL*VecN3(0,0.05,0)*(~DAJL);
-PdL=DAJL*VecN3(0,0,0.3)*(~DAJL);
+/**--------------- LEFT SIDE ---------------**/
+
+/**SJL**/  // Left Shoulder Joint
+TSJL = TranslatorN3(176.3*scale, -scale, 0);
+SJL_x = RotorN3(1,0,0, Left_Shoulder_Joint_x);
+SJL_y = RotorN3(0,1,0, Left_Shoulder_Joint_y);
+SJL_z = RotorN3(0,0,1, Left_Shoulder_Joint_z);
+DSJL = DLNJ * TSJL * SJL_x * SJL_y * SJL_z;
+PSJL = DSJL * p * (~DSJL);
+
+/**EJL**/  // Elbow Shoulder Joint
+TEJL = TranslatorN3(70*scale, -239.3*scale, 0);
+EJL_x = RotorN3(1,0,0, Left_Elbow_Joint_x);
+DEJL = DSJL*TEJL*EJL_x;
+PEJL = DEJL*p*(~DEJL);
+
+/**ManoL**/  // Left Hand
+TManoL = TranslatorN3(20*scale, -250*scale, 0);
+DManoL = DEJL * TManoL;
+PManoL = DManoL * p * (~DManoL);
+
+/**HJL**/  // Left Hip Joint 
+THJL = TranslatorN3(93.35*scale,0,0);
+HJL_x = RotorN3(1,0,0, Left_Hip_Joint_x);
+HJL_y = RotorN3(0,1,0, Left_Hip_Joint_y);
+HJL_z = RotorN3(0,0,1, Left_Hip_Joint_z);
+DHJL = DLLJL * THJL * HJL_x * HJL_y * HJL_z;
+PHJL = DHJL * p * (~DHJL);
+
+/**KJL**/  // Left Knee Joint
+TKJL = TranslatorN3(0, -380.6*scale, 0);
+KJL_x = RotorN3(1,0,0, Left_Knee_Joint_x);
+DKJL = DHJL * TKJL * KJL_x;
+PKJL = DKJL * p * (~DKJL);
+
+/**AJL**/  // Left Ankle Joint
+TAJL = TranslatorN3(0, -358.6*scale, 0);
+AJL_x = RotorN3(1,0,0, Left_Ankle_Joint_x);
+AJL_y = RotorN3(0,1,0, Left_Ankle_Joint_y);
+AJL_z = RotorN3(0,0,1, Left_Ankle_Joint_z);
+DAJL = DKJL * TAJL * AJL_x * AJL_y * AJL_z;
+PAJL = DAJL * p * (~DAJL);
+ 
+ 
+ 
+/**--------------- RIGHT SIDE ---------------**/
+
+/**SJR**/  // Right Shoulder Joint
+TSJR = TranslatorN3(-176.3*scale, -scale, 0);
+SJR_x = RotorN3(1,0,0, Right_Shoulder_Joint_x);
+SJR_y = RotorN3(0,1,0, Right_Shoulder_Joint_y);
+SJR_z = RotorN3(0,0,1, Right_Shoulder_Joint_z);
+DSJR = DLNJ * TSJR * SJR_x * SJR_y * SJR_z;
+PSJR = DSJR * p * (~DSJR);
+
+/**EJR**/  // Right Elbow Joint
+TEJR = TranslatorN3(-70*scale, -239.3*scale, 0);
+EJR_x = RotorN3(1,0,0, Right_Elbow_Joint_x);
+DEJR = DSJR * TEJR * EJR_x;
+PEJR = DEJR * p * (~DEJR);
+
+/**ManoR**/  // Right Hand
+TManoR = TranslatorN3(-20*scale, -250*scale, 0);
+DManoR = DEJR * TManoR;
+PManoR = DManoR * p * (~DManoR);
+
+/**HJR**/  // Right Hip Joint
+THJR = TranslatorN3(-93.35*scale, 0, 0);
+HJR_x = RotorN3(1,0,0, Right_Hip_Joint_x);
+HJR_y = RotorN3(0,1,0, Right_Hip_Joint_y);
+HJR_z = RotorN3(0,0,1, Right_Hip_Joint_z);
+DHJR = DLLJL * THJR * HJR_x * HJR_y * HJR_z;
+PHJR = DHJR * p * (~DHJR);
+
+/**KJR**/  // Right Knee Joint
+TKJR = TranslatorN3(0, -380.6*scale, 0);
+KJR_x = RotorN3(1,0,0, Right_Knee_Joint_x);
+DKJR = DHJR * TKJR * KJR_x;
+PKJR = DKJR * p * (~DKJR);
+
+/**AJR**/  // Right Ankle Joint
+TAJR = TranslatorN3(0, -358.6*scale, 0);
+AJR_x = RotorN3(1,0,0, Right_Ankle_Joint_x);
+AJR_y = RotorN3(0,1,0, Right_Ankle_Joint_y);
+AJR_z = RotorN3(0,0,1, Right_Ankle_Joint_z);
+DAJR = DKJR * TAJR * AJR_x * AJR_y * AJR_z;
+PAJR = DAJR * p * (~DAJR);
+
+
+
+/** -------------- FEET -------------**/
+
+// Left Foot
+RPos_Width = DAJR * VecN3(.25,0,0) *(~DAJR);
+RPos_Height = DAJR * VecN3(0,0.08,0) *(~DAJR);
+RPos_Deep = DAJR * VecN3(0,0,0.3) *(~DAJR);
+
+// Right Foot
+LPos_Width =  DAJL * VecN3(.25,0,0) * (~DAJL);
+LPos_Height = DAJL * VecN3(0,0.08,0) * (~DAJL);
+LPos_Deep = DAJL * VecN3(0,0,0.3) * (~DAJL);
+
+// Color feet
 :Color(.5,.5,.5);
-::Caja(PAJR,Pw,Ph,Pd);
-::Caja(PAJL,PwL,PhL,PdL);
-/**FlOOR**/
-TF = TranslatorN3(0, -550*scale,0);
-F = TF*p*(~TF);
+
+// Create Feet (libreria.clu)
+::Caja(PAJR, RPos_Width, RPos_Height, RPos_Deep);
+::Caja(PAJL, LPos_Width, LPos_Height, LPos_Deep);
+
+
+
+
+/** --------------- FlOOR --------------------**/
+TF = TranslatorN3(0, -590*scale, 0);
+F = TF * p * (~TF);
 
 TFW = TranslatorN3(800*scale, 0, 0);
-TFW = TF*TFW;
+TFW = TF * TFW;
 FW = TFW*p*(~TFW);
  
 TFH = TranslatorN3(0, 0, 800*scale);
-TFH = TF*TFH;
-FH = TFH*p*(~TFH);
+TFH = TF * TFH;
+FH = TFH * p * (~TFH);
 
 TFD = TranslatorN3(0, -20*scale, 0);
-TFD = TF*TFD;
-FD = TFD*p*(~TFD);
+TFD = TF * TFD;
+FD = TFD * p * (~TFD);
+
+
+
+
+/**----------- Visualization -----------------**/
+
+:IPNS;
+::Cilindro(PLNJ, PSJR, r/3);
+::Cilindro(PSJR, PEJR, r/3);
+::Cilindro(PEJR, PManoR, r/3);
+::Cilindro(PLNJ, PSJL, r/3);
+::Cilindro(PSJL, PEJL, r/3);
+::Cilindro(PEJL, PManoL, r/3);
+::Cilindro(PLLJU, PLNJ, r/3);
+::Cilindro(PHJR, PKJR, r/3);
+::Cilindro(PKJR, PAJR, r/3);
+::Cilindro(PHJR, PHJL, r/3);
+::Cilindro(PHJL, PKJL, r/3);
+::Cilindro(PKJL, PAJL, r/3);
+::Cilindro(PLLJU, PLLJL, r/3);
+::Cilindro(PLNJ, PHeadJ, r/3);
+
+:MMagenta;
+:PHJR - 1/2 * r^^2 * einf;
+:PKJR - 1/2 * r^^2 * einf;
+:PAJR - 1/2 * r^^2 * einf;
+:PHJL - 1/2 * r^^2 * einf;
+:PKJL - 1/2 * r^^2 * einf;
+:PAJL - 1/2 * r^^2 * einf;
+
+:MRed;
+:PLLJU - 1/2 * r^^2 * einf;
+:PHeadJ - 1/2 * r^^2 * einf;
+
+:MBlue;
+:PSJR - 1/2 * r^^2* einf;
+:PEJR - 1/2 * r^^2 * einf;	
+:PManoR - 1/2 * r^^2 * einf;
+:PSJL - 1/2 * r^^2 * einf;
+:PEJL - 1/2 * r^^2 * einf;	
+:PManoL - 1/2 * r^^2 * einf;
+
+:MYellow;
+:PHead - 1/2 * r^^2 * einf * 6;
+
 :MGreen;
 ::Caja(F, FW, FD, FH);

@@ -1,18 +1,17 @@
-//send help
 Cilindro=
 {
- a= _P(1);
- b= _P(2);
- r= _P(3);
+ a = _P(1);
+ b = _P(2);
+ r = _P(3);
  
- ae=(a^(e^e0))*(e^e0);
- be=(b^(e^e0))*(e^e0);
- d=(be-ae);
- dc=d+((0.5*d^^2)*e)+e0;
+ ae = (a^(e^e0))*(e^e0);
+ be = (b^(e^e0))*(e^e0);
+ d = (be-ae);
+ dc = d+((0.5*d^^2)*e)+e0;
  
  :Color(0.7,0.7,0.7);
  DrawCylinder(a,dc,r);
- [ae,be,dc]
+ [ae, be, dc]
 }
 Caja =
 {
