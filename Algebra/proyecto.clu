@@ -1,0 +1,188 @@
+//#include "Libreria.clu"
+
+DefVarsN3();
+DrawFrame(1,"axes");
+CheckAnimation=CheckBox("Habilitar animación",0);
+if(CheckAnimation){
+	EnableAnimate(true);
+}
+else{
+	EnableAnimate(false);
+}
+if(ExecMode & EM_CHANGE){
+	inputs=ReadData("datos.dat");
+}
+sizeData=Size(inputs);
+T=(round(Time*100,0)%(sizeData-1))+1;
+
+r=0.15;
+p=e0;
+scale=.0031;
+TBF=TranslatorN3(inputs(T,1),inputs(T,2),inputs(T,3));
+BF_x=RotorN3(1,0,0,inputs(T,4));
+BF_y=RotorN3(0,1,0,inputs(T,5));
+BF_z=RotorN3(0,0,1,inputs(T,6));
+DBF=TBF*BF_x*BF_y*BF_z;
+PBF=DBF*p*(~DBF);
+/**---------------CENTER---------------**/
+/**LLJU**/
+TLLJU=TranslatorN3(0,409.4*scale,0);
+LLJU_x=RotorN3(1,0,0,inputs(T,7));
+LLJU_z=RotorN3(0,0,1,inputs(T,8));
+DLLJU=DBF*LLJU_x*LLJU_z;
+PLLJU=DLLJU*p*(~DLLJU);
+/**LNJ**/
+LNJ_x=RotorN3(1,0,0,inputs(T,9));
+LNJ_y=RotorN3(0,1,0,inputs(T,10));
+DLNJ=DLLJU*TLLJU*LNJ_x*LNJ_y;
+PLNJ=DLNJ*p*(~DLNJ);
+
+/**HeadJ**/
+THeadJ = TranslatorN3(0,100*scale, 0);
+DHeadJ = DLNJ*THeadJ;
+PHeadJ = DHeadJ*p*(~DHeadJ);
+/**Head**/
+THead = TranslatorN3(0,110*scale, 0);
+DHead = DHeadJ*THead;
+PHead = DHead*p*(~DHead);
+/**LLJL**/
+TLLJL=TranslatorN3(0,-119.8*scale,0);
+DLLJL=DBF*TLLJL;
+PLLJL=DLLJL*p*(~DLLJL);	
+/**---------------LEFT SIDE---------------**/
+/**SJL**/
+TSJL=TranslatorN3(176.3*scale,-scale,0);
+SJL_x=RotorN3(1,0,0,inputs(T,11));
+SJL_y=RotorN3(0,1,0,inputs(T,12));
+SJL_z=RotorN3(0,0,1,inputs(T,13));
+DSJL=DLNJ*TSJL*SJL_x*SJL_y*SJL_z;
+PSJL=DSJL*p*(~DSJL);
+/**EJL**/
+TEJL=TranslatorN3(70*scale,-239.3*scale,0);
+EJL_x=RotorN3(1,0,0,inputs(T,14));
+DEJL=DSJL*TEJL*EJL_x;
+PEJL=DEJL*p*(~DEJL);
+/**ManoL**/
+TManoL=TranslatorN3(20*scale,-250*scale,0);
+DManoL=DEJL*TManoL;
+PManoL=DManoL*p*(~DManoL);
+/**HJL**/
+THJL=TranslatorN3(93.35*scale,0,0);
+HJL_x=RotorN3(1,0,0,inputs(T,19));
+HJL_y=RotorN3(0,1,0,inputs(T,20));
+HJL_z=RotorN3(0,0,1,inputs(T,21));
+DHJL=DLLJL*THJL*HJL_x*HJL_y*HJL_z;
+PHJL=DHJL*p*(~DHJL);
+/**KJL**/
+TKJL=TranslatorN3(0,-380.6*scale,0);
+KJL_x=RotorN3(1,0,0,inputs(T,22));
+DKJL=DHJL*TKJL*KJL_x;
+PKJL=DKJL*p*(~DKJL);
+/**AJL**/
+TAJL=TranslatorN3(0,-358.6*scale,0);
+AJL_x=RotorN3(1,0,0,inputs(T,23));
+AJL_y=RotorN3(0,1,0,inputs(T,24));
+AJL_z=RotorN3(0,0,1,inputs(T,25));
+DAJL=DKJL*TAJL*AJL_x*AJL_y*AJL_z;
+PAJL=DAJL*p*(~DAJL);
+
+/**---------------RIGHT SIDE---------------**/
+/**SJR**/
+TSJR=TranslatorN3(-176.3*scale,-scale,0);
+SJR_x=RotorN3(1,0,0,inputs(T,15));
+SJR_y=RotorN3(0,1,0,inputs(T,16));
+SJR_z=RotorN3(0,0,1,inputs(T,17));
+DSJR=DLNJ*TSJR*SJR_x*SJR_y*SJR_z;
+PSJR=DSJR*p*(~DSJR);
+/**EJR**/
+TEJR=TranslatorN3(-70*scale,-239.3*scale,0);
+EJR_x=RotorN3(1,0,0,inputs(T,18));
+DEJR=DSJR*TEJR*EJR_x;
+PEJR=DEJR*p*(~DEJR);
+/**ManoR**/
+TManoR=TranslatorN3(-20*scale,-250*scale,0);
+DManoR=DEJR*TManoR;
+PManoR=DManoR*p*(~DManoR);
+/**HJR**/
+THJR=TranslatorN3(-93.35*scale,0,0);
+HJR_x=RotorN3(1,0,0,inputs(T,26));
+HJR_y=RotorN3(0,1,0,inputs(T,27));
+HJR_z=RotorN3(0,0,1,inputs(T,28));
+DHJR=DLLJL*THJR*HJR_x*HJR_y*HJR_z;
+PHJR=DHJR*p*(~DHJR);
+/**KJR**/
+TKJR=TranslatorN3(0,-380.6*scale,0);
+KJR_x=RotorN3(1,0,0,inputs(T,29));
+DKJR=DHJR*TKJR*KJR_x;
+PKJR=DKJR*p*(~DKJR);
+/**AJR**/
+TAJR=TranslatorN3(0,-358.6*scale,0);
+AJR_x=RotorN3(1,0,0,inputs(T,30));
+AJR_y=RotorN3(0,1,0,inputs(T,31));
+AJR_z=RotorN3(0,0,1,inputs(T,32));
+DAJR=DKJR*TAJR*AJR_x*AJR_y*AJR_z;
+PAJR=DAJR*p*(~DAJR);
+
+/**Visualization**/
+:IPNS;
+::Cilindro(PLNJ,PSJR,r/3);
+::Cilindro(PSJR,PEJR,r/3);
+::Cilindro(PEJR,PManoR,r/3);
+::Cilindro(PLNJ,PSJL,r/3);
+::Cilindro(PSJL,PEJL,r/3);
+::Cilindro(PEJL,PManoL,r/3);
+::Cilindro(PLLJU,PLNJ,r/3);
+::Cilindro(PHJR,PKJR,r/3);
+::Cilindro(PKJR,PAJR,r/3);
+::Cilindro(PHJR,PHJL,r/3);
+::Cilindro(PHJL,PKJL,r/3);
+::Cilindro(PKJL,PAJL,r/3);
+::Cilindro(PLLJU,PLLJL,r/3);
+::Cilindro(PLNJ, PHeadJ, r/3);
+:MMagenta;
+:PHJR-1/2*r^^2*einf;
+:PKJR-1/2*r^^2*einf;
+:PAJR-1/2*r^^2*einf;
+:PHJL-1/2*r^^2*einf;
+:PKJL-1/2*r^^2*einf;
+:PAJL-1/2*r^^2*einf;
+:MRed;
+:PLLJU-1/2*r^^2*einf;
+:PHeadJ-1/2*r^^2*einf;
+:MBlue;
+:PSJR-1/2*r^^2*einf;
+:PEJR-1/2*r^^2*einf;	
+:PManoR-1/2*r^^2*einf;
+:PSJL-1/2*r^^2*einf;
+:PEJL-1/2*r^^2*einf;	
+:PManoL-1/2*r^^2*einf;
+:MYellow;
+:PHead-1/2*r^^2*einf*6;
+/**FEET**/
+Pw=DAJR*VecN3(.3,0,0)*(~DAJR);
+Ph=DAJR*VecN3(0,0.05,0)*(~DAJR);
+Pd=DAJR*VecN3(0,0,0.3)*(~DAJR);
+
+PwL=DAJL*VecN3(.3,0,0)*(~DAJL);
+PhL=DAJL*VecN3(0,0.05,0)*(~DAJL);
+PdL=DAJL*VecN3(0,0,0.3)*(~DAJL);
+:Color(.5,.5,.5);
+::Caja(PAJR,Pw,Ph,Pd);
+::Caja(PAJL,PwL,PhL,PdL);
+/**FlOOR**/
+TF = TranslatorN3(0, -550*scale,0);
+F = TF*p*(~TF);
+
+TFW = TranslatorN3(800*scale, 0, 0);
+TFW = TF*TFW;
+FW = TFW*p*(~TFW);
+ 
+TFH = TranslatorN3(0, 0, 800*scale);
+TFH = TF*TFH;
+FH = TFH*p*(~TFH);
+
+TFD = TranslatorN3(0, -20*scale, 0);
+TFD = TF*TFD;
+FD = TFD*p*(~TFD);
+:MGreen;
+::Caja(F, FW, FD, FH);

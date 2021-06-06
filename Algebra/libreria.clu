@@ -1,0 +1,38 @@
+//send help
+Cilindro=
+{
+ a= _P(1);
+ b= _P(2);
+ r= _P(3);
+ 
+ ae=(a^(e^e0))*(e^e0);
+ be=(b^(e^e0))*(e^e0);
+ d=(be-ae);
+ dc=d+((0.5*d^^2)*e)+e0;
+ 
+ :Color(0.7,0.7,0.7);
+ DrawCylinder(a,dc,r);
+ [ae,be,dc]
+}
+Caja =
+{
+c = _P(1);
+h = _P(2);
+w = _P(3);
+d = _P(4);
+
+ce = (c^(e^e0))*(e^e0);
+he = (h^(e^e0))*(e^e0);
+we = (w^(e^e0))*(e^e0);
+de = (d^(e^e0))*(e^e0);
+
+x = 2*(he-ce);
+y = 2 * (we-ce);
+z = 2 * (de - ce);
+
+hi = x + ((0.5*x^^2)*e) + e0;
+wi = y + ((0.5*y^^2)*e) + e0;
+di = z + ((0.5*z^^2)*e) + e0;
+
+DrawBox(c, hi, wi, di);
+}
